@@ -39,6 +39,17 @@
       ListeUtil.PrintListe(liste);
       ListeUtil.Insert(ref liste, 0, 909);
       ListeUtil.PrintListe(liste);
+
+      ListeUtil.Remove(ref liste);
+      ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
     }
   }
   internal class ListeUtil
@@ -157,6 +168,32 @@
       {
         Push(ref liste, val);
       }
+    }
+    internal static int Remove(ref Liste? liste)
+    {
+      int retiré;
+      if (liste != null)
+      {
+        if (liste.suivant != null)
+        {
+
+          Liste? current = liste;
+          while (current.suivant.suivant != null)
+          {
+            current = current.suivant;
+          }
+          retiré = current.suivant.val;
+          current.suivant = null;
+
+        }
+        else
+        {
+          retiré = liste.val;
+          liste = null;
+        }
+      }
+      else throw new NullReferenceException();
+      return retiré;
     }
   }
 }
