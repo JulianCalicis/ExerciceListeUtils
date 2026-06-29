@@ -35,6 +35,10 @@
       ListeUtil.PrintListe(liste);
 
       Console.WriteLine(ListeUtil.Read(liste, 2));
+
+      ListeUtil.PrintListe(liste);
+      ListeUtil.Insert(ref liste, 0, 909);
+      ListeUtil.PrintListe(liste);
     }
   }
   internal class ListeUtil
@@ -130,6 +134,29 @@
         throw new IndexOutOfRangeException();
       }
       return current.val;
+    }
+    internal static void Insert(ref Liste liste, int pos, int val)
+    {
+      //Gérer les cas: première position, dernière position, dépassement
+      if (liste != null && pos > 0)
+      {
+        Liste? current = liste;
+        while (current.suivant != null && pos > 1)
+        //1 pour ajouter à la position pos
+        //0 pour ajouter après l'élément de position pos
+        {
+          current = current.suivant;
+          pos--;
+        }
+        Liste tmp = new Liste();
+        tmp.val = val;
+        tmp.suivant = current.suivant;
+        current.suivant = tmp;
+      }
+      else
+      {
+        Push(ref liste, val);
+      }
     }
   }
 }
