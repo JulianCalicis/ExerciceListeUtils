@@ -33,6 +33,8 @@
 
       ListeUtil.Add(ref liste, 11);
       ListeUtil.PrintListe(liste);
+
+      Console.WriteLine(ListeUtil.Read(liste, 2));
     }
   }
   internal class ListeUtil
@@ -110,6 +112,24 @@
           val = val
         };
       }
+    }
+    internal static int Read(Liste? liste, int pos)
+    {
+      Liste? current = liste;
+
+      if (liste != null)
+      {
+        while (current.suivant != null && pos > 0)
+        {
+          current = current.suivant;
+          pos--;
+        }
+      }
+      if (pos > 0)
+      {
+        throw new IndexOutOfRangeException();
+      }
+      return current.val;
     }
   }
 }
