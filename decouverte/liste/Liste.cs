@@ -1,57 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace decouverte.liste
+﻿namespace decouverte.liste
 {
-    internal class Liste
+  internal class Liste
+  {
+    public int val;
+    public Liste suivant;
+  }
+
+  internal class MainList : IItem
+  {
+    public string GetName()
     {
-        public int val;
-        public Liste suivant;
+      return "Manipulation de liste";
     }
 
-    internal class MainList : IItem
+    public void Run()
     {
-        public string GetName()
-        {
-            return "Manipulation de liste";
-        }
+      Liste? liste = null;
 
-        public void Run()
-        {
-            Liste? liste = null;
-            ListeUtil.Push(ref liste, 10);
-            ListeUtil.Push(ref liste, 9);
-            ListeUtil.Push(ref liste, 8);
-            ListeUtil.Push(ref liste, 7);
+      ListeUtil.Push(ref liste, 10);
+      ListeUtil.Push(ref liste, 9);
+      ListeUtil.Push(ref liste, 8);
+      ListeUtil.Push(ref liste, 7);
 
-            ListeUtil.PrintListe(liste);
+      ListeUtil.PrintListe(liste);
+
+      ListeUtil.PrintListe(ListeUtil.Push(ListeUtil.Push(ListeUtil.Push(ListeUtil.Push(liste, 6), 5), 4), 3));
+    }
+  }
+  internal class ListeUtil
+  {
+    public static void PrintListe(Liste l)
+    {
+      Console.Write('[');
+      while (l != null)
+      {
+        Console.Write(l.val);
+        if (l.suivant != null)
+        {
+          Console.Write(", ");
         }
+        l = l.suivant;
+      }
+      Console.WriteLine(']');
     }
 
-    internal class ListeUtil
+    internal static void Push(ref Liste? liste, int val)
     {
-        public static void PrintListe(Liste l)
-        {
-            Console.Write('[');
-            while(l != null)
-            {
-                Console.Write(l.val);
-                if(l.suivant != null)
-                {
-                    Console.Write(", ");
-                }
-                l = l.suivant;
-            }
-            Console.Write(']');
-        }
-
-        internal static void Push( ref Liste? liste, int val)
-        {
-            Liste nouv = new Liste();
-            nouv.val = val;
-            nouv.suivant = liste;
-            liste = nouv;
-        }
+      Liste nouv = new Liste();
+      nouv.val = val;
+      nouv.suivant = liste;
+      liste = nouv;
     }
+
+    internal static Liste Push(Liste? liste, int val)
+    {
+      Liste nouv = new Liste();
+      nouv.val = val;
+      nouv.suivant = liste;
+
+      return nouv;
+    }
+
+  }
 }
