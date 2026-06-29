@@ -21,6 +21,7 @@
       ListeUtil.Push(ref liste, 9);
       ListeUtil.Push(ref liste, 8);
       ListeUtil.Push(ref liste, 7);
+      Console.WriteLine(ListeUtil.Size(liste));
 
       ListeUtil.PrintListe(liste);
 
@@ -28,6 +29,29 @@
 
       Console.WriteLine(ListeUtil.Pop(ref liste));
 
+      ListeUtil.PrintListe(liste);
+
+      ListeUtil.Add(ref liste, 11);
+      ListeUtil.PrintListe(liste);
+
+      Console.WriteLine(ListeUtil.Read(liste, 2));
+
+      ListeUtil.PrintListe(liste);
+      ListeUtil.Insert(ref liste, 0, 909);
+      ListeUtil.PrintListe(liste);
+
+      ListeUtil.Remove(ref liste);
+      ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+      //ListeUtil.Remove(ref liste);
+      //ListeUtil.PrintListe(liste);
+
+      ListeUtil.RemoveAt(ref liste, 4);
       ListeUtil.PrintListe(liste);
     }
   }
@@ -74,5 +98,130 @@
 
       return valeurRetirée;
     }
+    internal static int Size(Liste? liste)
+    {
+      Liste? current = liste; //Mettre le pointeur à la surface
+      int sizeOfList = 0;
+      while (current != null)
+      {
+        sizeOfList++;
+        current = current.suivant;
+      }
+      return sizeOfList;
+    }
+    internal static void Add(ref Liste? liste, int val)
+    {
+      if (liste != null)
+      {
+        Liste? current = liste;
+        while (current.suivant != null)
+        {
+          current = current.suivant;
+        }
+        current.suivant = new Liste()
+        {
+          val = val
+        };
+      }
+      else
+      {
+        liste = new Liste()
+        {
+          val = val
+        };
+      }
+    }
+    internal static int Read(Liste? liste, int pos)
+    {
+      Liste? current = liste;
+
+      if (liste != null)
+      {
+        while (current.suivant != null && pos > 0)
+        {
+          current = current.suivant;
+          pos--;
+        }
+      }
+      if (pos > 0)
+      {
+        throw new IndexOutOfRangeException();
+      }
+      return current.val;
+    }
+    internal static void Insert(ref Liste liste, int pos, int val)
+    {
+      //Gérer les cas: première position, dernière position, dépassement
+      if (liste != null && pos > 0)
+      {
+        Liste? current = liste;
+        while (current.suivant != null && pos > 1)
+        //1 pour ajouter à la position pos
+        //0 pour ajouter après l'élément de position pos
+        {
+          current = current.suivant;
+          pos--;
+        }
+        Liste tmp = new Liste();
+        tmp.val = val;
+        tmp.suivant = current.suivant;
+        current.suivant = tmp;
+      }
+      else
+      {
+        Push(ref liste, val);
+      }
+    }
+    internal static int Remove(ref Liste? liste)
+    {
+      int retiré;
+      if (liste != null)
+      {
+        if (liste.suivant != null)
+        {
+
+          Liste? current = liste;
+          while (current.suivant.suivant != null)
+          {
+            current = current.suivant;
+          }
+          retiré = current.suivant.val;
+          current.suivant = null;
+        }
+        else
+        {
+          retiré = liste.val;
+          liste = null;
+        }
+      }
+      else throw new NullReferenceException();
+      return retiré;
+    }
+    internal static int RemoveAt(ref Liste? liste, int pos)
+    {
+      int retiré;
+      if (liste != null && pos > 0)
+      {
+        if (liste.suivant != null)
+        {
+          Liste? current = liste;
+          while (current.suivant.suivant != null && pos > 1)//Si ça dépasse, le dernier est retiré, fallait pas jouer au con, utilisateur
+          {
+            current = current.suivant;
+          }
+          retiré = current.suivant.val;
+          current.suivant = current.suivant.suivant;
+
+        }
+        else
+        {
+          retiré = liste.val;
+          liste = null;
+        }
+      }
+      else retiré = Pop(ref liste);
+      return retiré;
+    }
+
   }
 }
