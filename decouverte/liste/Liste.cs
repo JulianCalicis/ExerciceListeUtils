@@ -25,6 +25,10 @@
       ListeUtil.PrintListe(liste);
 
       ListeUtil.PrintListe(ListeUtil.Push(ListeUtil.Push(ListeUtil.Push(ListeUtil.Push(liste, 6), 5), 4), 3));
+
+      Console.WriteLine(ListeUtil.Pop(ref liste));
+
+      ListeUtil.PrintListe(liste);
     }
   }
   internal class ListeUtil
@@ -60,6 +64,15 @@
 
       return nouv;
     }
+    internal static int Pop(ref Liste? liste)
+    {
+      Liste anc = liste;
+      int valeurRetirée = liste.val;
+      liste = new Liste();
+      liste.val = anc.suivant.val;
+      liste.suivant = anc.suivant.suivant;
 
+      return valeurRetirée;
+    }
   }
 }
