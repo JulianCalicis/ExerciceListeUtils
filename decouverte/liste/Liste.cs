@@ -30,6 +30,9 @@
       Console.WriteLine(ListeUtil.Pop(ref liste));
 
       ListeUtil.PrintListe(liste);
+
+      ListeUtil.Add(ref liste, 11);
+      ListeUtil.PrintListe(liste);
     }
   }
   internal class ListeUtil
@@ -85,6 +88,28 @@
         current = current.suivant;
       }
       return sizeOfList;
+    }
+    internal static void Add(ref Liste? liste, int val)
+    {
+      if (liste != null)
+      {
+        Liste? current = liste;
+        while (current.suivant != null)
+        {
+          current = current.suivant;
+        }
+        current.suivant = new Liste()
+        {
+          val = val
+        };
+      }
+      else
+      {
+        liste = new Liste()
+        {
+          val = val
+        };
+      }
     }
   }
 }
