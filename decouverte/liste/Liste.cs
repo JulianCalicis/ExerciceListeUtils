@@ -21,6 +21,7 @@
       ListeUtil.Push(ref liste, 9);
       ListeUtil.Push(ref liste, 8);
       ListeUtil.Push(ref liste, 7);
+      Console.WriteLine(ListeUtil.Size(liste));
 
       ListeUtil.PrintListe(liste);
 
@@ -73,6 +74,17 @@
       liste.suivant = anc.suivant.suivant;
 
       return valeurRetirée;
+    }
+    internal static int Size(Liste? liste)
+    {
+      Liste? current = liste; //Mettre le pointeur à la surface
+      int sizeOfList = 0;
+      while (current != null)
+      {
+        sizeOfList++;
+        current = current.suivant;
+      }
+      return sizeOfList;
     }
   }
 }
