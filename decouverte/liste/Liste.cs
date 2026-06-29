@@ -50,6 +50,9 @@
       //ListeUtil.PrintListe(liste);
       //ListeUtil.Remove(ref liste);
       //ListeUtil.PrintListe(liste);
+
+      ListeUtil.RemoveAt(ref liste, 4);
+      ListeUtil.PrintListe(liste);
     }
   }
   internal class ListeUtil
@@ -184,7 +187,6 @@
           }
           retiré = current.suivant.val;
           current.suivant = null;
-
         }
         else
         {
@@ -195,5 +197,31 @@
       else throw new NullReferenceException();
       return retiré;
     }
+    internal static int RemoveAt(ref Liste? liste, int pos)
+    {
+      int retiré;
+      if (liste != null && pos > 0)
+      {
+        if (liste.suivant != null)
+        {
+          Liste? current = liste;
+          while (current.suivant.suivant != null && pos > 1)//Si ça dépasse, le dernier est retiré, fallait pas jouer au con, utilisateur
+          {
+            current = current.suivant;
+          }
+          retiré = current.suivant.val;
+          current.suivant = current.suivant.suivant;
+
+        }
+        else
+        {
+          retiré = liste.val;
+          liste = null;
+        }
+      }
+      else retiré = Pop(ref liste);
+      return retiré;
+    }
+
   }
 }
