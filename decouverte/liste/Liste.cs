@@ -3,7 +3,7 @@
   internal class Liste
   {
     public int val;
-    public Liste suivant;
+    public Liste? suivant;
   }
 
   internal class MainList : IItem
@@ -57,7 +57,7 @@
   }
   internal class ListeUtil
   {
-    public static void PrintListe(Liste l)
+    public static void PrintListe(Liste? l)
     {
       Console.Write('[');
       while (l != null)
@@ -74,29 +74,46 @@
 
     internal static void Push(ref Liste? liste, int val)
     {
-      Liste nouv = new Liste();
-      nouv.val = val;
-      nouv.suivant = liste;
+      Liste nouv = new()
+      {
+        val = val,
+        suivant = liste
+      };
       liste = nouv;
     }
 
     internal static Liste Push(Liste? liste, int val)
     {
-      Liste nouv = new Liste();
-      nouv.val = val;
-      nouv.suivant = liste;
+      Liste nouv = new()
+      {
+        val = val,
+        suivant = liste
+      };
 
       return nouv;
     }
+    internal static int Peek(Liste? liste)
+    {
+      int ret;
+      if (liste != null)
+        ret = liste.val;
+      else
+        throw new ArgumentNullException(nameof(liste));
+      return ret;
+    }
     internal static int Pop(ref Liste? liste)
     {
-      Liste anc = liste;
-      int valeurRetirée = liste.val;
-      liste = new Liste();
-      liste.val = anc.suivant.val;
-      liste.suivant = anc.suivant.suivant;
+      if (liste != null)
+      {
+        //Liste anc = liste;
+        int valeurRetirée = liste.val;
+        //liste = new Liste();
+        //liste.val = liste.suivant.val;
+        liste = liste.suivant;
 
-      return valeurRetirée;
+        return valeurRetirée;
+      }
+      else throw new ArgumentNullException(nameof(liste));
     }
     internal static int Size(Liste? liste)
     {
@@ -133,28 +150,30 @@
     }
     internal static int Read(Liste? liste, int pos)
     {
-      Liste? current = liste;
-
+      Liste current;
+      ArgumentOutOfRangeException.ThrowIfNegative(pos);
       if (liste != null)
       {
+        current = liste;
         while (current.suivant != null && pos > 0)
         {
           current = current.suivant;
           pos--;
         }
       }
+      else throw new ArgumentNullException(nameof(liste));
       if (pos > 0)
       {
         throw new IndexOutOfRangeException();
       }
       return current.val;
     }
-    internal static void Insert(ref Liste liste, int pos, int val)
+    internal static void Insert(ref Liste? liste, int pos, int val)
     {
       //Gérer les cas: première position, dernière position, dépassement
       if (liste != null && pos > 0)
       {
-        Liste? current = liste;
+        Liste current = liste;
         while (current.suivant != null && pos > 1)
         //1 pour ajouter à la position pos
         //0 pour ajouter après l'élément de position pos
@@ -162,9 +181,11 @@
           current = current.suivant;
           pos--;
         }
-        Liste tmp = new Liste();
-        tmp.val = val;
-        tmp.suivant = current.suivant;
+        Liste tmp = new()
+        {
+          val = val,
+          suivant = current.suivant
+        };
         current.suivant = tmp;
       }
       else
@@ -177,11 +198,10 @@
       int retiré;
       if (liste != null)
       {
-        if (liste.suivant != null)
+        Liste current = liste;
+        if (current.suivant != null)
         {
-
-          Liste? current = liste;
-          while (current.suivant.suivant != null)
+          while (current.suivant != null && current.suivant.suivant != null)
           {
             current = current.suivant;
           }
@@ -190,6 +210,7 @@
         }
         else
         {
+          // équivalent au Pop
           retiré = liste.val;
           liste = null;
         }
@@ -202,9 +223,9 @@
       int retiré;
       if (liste != null && pos > 0)
       {
-        if (liste.suivant != null)
+        Liste current = liste;
+        if (current.suivant != null)
         {
-          Liste? current = liste;
           while (current.suivant.suivant != null && pos > 1)//Si ça dépasse, le dernier est retiré, fallait pas jouer au con, utilisateur
           {
             current = current.suivant;
